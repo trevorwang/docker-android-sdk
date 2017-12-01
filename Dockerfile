@@ -11,7 +11,7 @@ RUN dpkg --add-architecture i386 && \
     apt-get clean
 
 # Download and untar SDK
-ENV ANDROID_SDK_URL https://dl.google.com/android/repository/tools_r25.2.4-linux.zip
+ENV ANDROID_SDK_URL https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip
 RUN curl -L "${ANDROID_SDK_URL}" > android-sdk.zip
 RUN unzip android-sdk.zip -d /usr/local/android-sdk-linux && rm android-sdk.zip
 ENV ANDROID_HOME /usr/local/android-sdk-linux
@@ -20,16 +20,9 @@ ENV PATH ${ANDROID_HOME}/tools:$ANDROID_HOME/platform-tools:$PATH
 
 # Install Android SDK components
 
-# License Id: android-sdk-license-ed0d0a5b
-ENV ANDROID_COMPONENTS platform-tools,build-tools-25.0.2,android-25
-# License Id: android-sdk-license-5be876d5
-ENV GOOGLE_COMPONENTS extra-android-m2repository,extra-google-m2repository
+ENV ANDROID_COMPONENTS "platform-tools build-tools;27.0.1 platforms;android-27"
 
-RUN echo y | android update sdk --no-ui --all --filter "${ANDROID_COMPONENTS}" ; \
-    echo y | android update sdk --no-ui --all --filter "${GOOGLE_COMPONENTS}"
-
-RUN echo y | /usr/local/android-sdk-linux/tools/bin/sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.0-beta4"
-RUN echo y | /usr/local/android-sdk-linux/tools/bin/sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-beta4"
+RUN for component in ${ANDROID_COMPONENTS}; do echo y | /usr/local/android-sdk-linux/tools/bin/sdkmanager "${component}"; done
 
 # Support Gradle
 ENV TERM dumb
