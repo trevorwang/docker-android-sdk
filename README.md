@@ -5,7 +5,7 @@ No `ant`, `maven`, nor `android-ndk` are included. Not even Gradle. Please use G
 
 This fork aims to provide tags for the Docker images that represent the build tools version installed in the image, so your project can reference whichever version it needs. The matching Android platform is installed as well.
 
-Example: for `27.0.1` tag the `build-tools;27.0.1` and `platforms;android-27` package is installed.
+Example: for `27.0.2` tag the `build-tools;27.0.2` and `platforms;android-27` package is installed.
 
 ## Included
 
